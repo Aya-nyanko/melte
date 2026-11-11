@@ -1,0 +1,10 @@
+import sharp from 'sharp';
+import fs from 'node:fs/promises';
+const logo=await sharp('assets/brand/melte-logo.svg').resize(490).png().toBuffer();
+const label=Buffer.from(`<svg width="600" height="350" xmlns="http://www.w3.org/2000/svg"><g fill="#07552E" text-anchor="middle" font-family="sans-serif"><text x="300" y="40" font-size="23" letter-spacing="5" font-weight="700">BAKED SWEETS</text><text x="300" y="190" font-size="31">Strawberry Chocolate</text><text x="300" y="233" font-size="31">Cream Cheese Cookie</text><text x="300" y="290" font-size="18" letter-spacing="3">A LITTLE BITE OF HAPPINESS</text></g></svg>`);
+const mask=await sharp(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1536"><path fill="white" d="M145 170 Q155 144 185 144 L830 144 Q860 146 864 175 L864 1340 L818 1387 L160 1378 Q145 1375 145 1360Z"/></svg>')).ensureAlpha().extractChannel(3).toBuffer();
+const rgb=await sharp('assets/originals/package-blank-v1.png').removeAlpha().png().toBuffer();
+const cutout=await sharp(rgb).joinChannel(mask).png().toBuffer();
+await sharp(cutout).composite([{input:logo,left:240,top:430},{input:label,left:185,top:560}]).png().toFile('assets/originals/package-v1.png');
+await fs.copyFile('node_modules/motion/dist/motion.js','assets/vendor/motion.js');
+await fs.copyFile('node_modules/motion/LICENSE.md','assets/vendor/MOTION-LICENSE.md');

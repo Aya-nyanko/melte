@@ -1,0 +1,1 @@
+{"name":"melte-brand-site","private":true,"version":"1.0.0","type":"module","scripts":{"start":"python3 -m http.server 4173 --bind 127.0.0.1","assets":"node scripts/optimize.mjs"},"dependencies":{"motion":"14.12.0","sharp":"0.35.5"}}
